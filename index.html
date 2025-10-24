@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PH Alkansya - Filipino Piggy Bank</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="header-content">
+                <h1>🐷 PH Alkansya</h1>
+                <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode">
+                    <span class="theme-icon">🌙</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- How to Use Section -->
+        <section class="how-to-use">
+            <details>
+                <summary>📖 How to Use</summary>
+                <div class="instructions">
+                    <p><strong>Welcome to your digital alkansya!</strong></p>
+                    <ul>
+                        <li>💰 <strong>Add Savings:</strong> Use quick-add buttons or enter custom amounts with quantity and notes.</li>
+                        <li>🎯 <strong>Set Goals:</strong> Click "Edit Goal" to set your savings target.</li>
+                        <li>📊 <strong>Track Progress:</strong> Watch your piggy fill up as you save more!</li>
+                        <li>✏️ <strong>Manage:</strong> Edit or delete any transaction from your history.</li>
+                        <li>🏦 <strong>Empty Alkansya:</strong> Transfer savings to your vault when ready.</li>
+                        <li>💾 <strong>Backup:</strong> Export/Import CSV to save your data.</li>
+                        <li>🌓 <strong>Theme:</strong> Toggle light/dark mode with the moon/sun icon.</li>
+                    </ul>
+                </div>
+            </details>
+        </section>
+
+        <!-- Balance Summary -->
+        <section class="balance-summary">
+            <div class="piggy-visual">
+                <div class="piggy-container">
+                    <svg class="piggy-svg" viewBox="0 0 200 160" aria-label="Piggy bank visualization">
+                        <defs>
+                            <linearGradient id="piggyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" style="stop-color:#ff9ecd;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#ff6ba9;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <!-- Piggy body -->
+                        <ellipse cx="100" cy="90" rx="70" ry="50" fill="url(#piggyGradient)" />
+                        <!-- Piggy snout -->
+                        <ellipse cx="140" cy="85" rx="20" ry="15" fill="#ff6ba9" />
+                        <circle cx="135" cy="82" r="3" fill="#d946a6" />
+                        <circle cx="135" cy="90" r="3" fill="#d946a6" />
+                        <!-- Piggy eye -->
+                        <circle cx="110" cy="75" r="5" fill="#1f2937" />
+                        <!-- Piggy ear -->
+                        <ellipse cx="85" cy="60" rx="12" ry="18" fill="#ff9ecd" />
+                        <!-- Piggy legs -->
+                        <rect x="60" y="130" width="12" height="20" rx="6" fill="#ff6ba9" />
+                        <rect x="85" y="130" width="12" height="20" rx="6" fill="#ff6ba9" />
+                        <rect x="110" y="130" width="12" height="20" rx="6" fill="#ff6ba9" />
+                        <rect x="135" y="130" width="12" height="20" rx="6" fill="#ff6ba9" />
+                        <!-- Coin slot -->
+                        <rect x="90" y="55" width="20" height="4" rx="2" fill="#1f2937" />
+                        <!-- Filling overlay -->
+                        <rect id="piggyFill" x="30" y="140" width="140" height="0" fill="rgba(251, 191, 36, 0.3)" />
+                    </svg>
+                </div>
+            </div>
+            
+            <div class="balance-cards">
+                <div class="balance-card">
+                    <div class="card-label">Current Savings</div>
+                    <div class="card-value" id="currentBalance">₱0.00</div>
+                </div>
+                <div class="balance-card">
+                    <div class="card-label">Vault Total</div>
+                    <div class="card-value vault" id="vaultTotal">₱0.00</div>
+                </div>
+            </div>
+
+            <div class="goal-section">
+                <div class="goal-header">
+                    <span class="goal-label">Savings Goal</span>
+                    <button id="editGoalBtn" class="btn-small" aria-label="Edit savings goal">Edit Goal</button>
+                </div>
+                <div class="goal-amount" id="goalAmount">₱10,000.00</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                        <span class="progress-text" id="progressText">0%</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Add Buttons -->
+        <section class="quick-add">
+            <h2>Quick Add</h2>
+            <div class="denomination-buttons">
+                <button class="denom-btn" data-amount="1">₱1</button>
+                <button class="denom-btn" data-amount="5">₱5</button>
+                <button class="denom-btn" data-amount="10">₱10</button>
+                <button class="denom-btn" data-amount="20">₱20</button>
+                <button class="denom-btn" data-amount="50">₱50</button>
+                <button class="denom-btn" data-amount="100">₱100</button>
+                <button class="denom-btn" data-amount="200">₱200</button>
+                <button class="denom-btn" data-amount="500">₱500</button>
+                <button class="denom-btn" data-amount="1000">₱1000</button>
+            </div>
+        </section>
+
+        <!-- Add Transaction Form -->
+        <section class="add-transaction">
+            <h2>Add Custom Amount</h2>
+            <form id="addTransactionForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="amount">Amount (₱)</label>
+                        <input type="number" id="amount" step="0.01" min="0.01" placeholder="0.00" aria-required="true">
+                    </div>
+                    <div class="form-group">
+                        <label for="quantity">Quantity</label>
+                        <input type="number" id="quantity" value="1" min="1" aria-required="true">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="note">Note (optional)</label>
+                    <input type="text" id="note" placeholder="e.g., Weekly savings, Birthday gift">
+                </div>
+                <div class="form-group">
+                    <label for="date">Date</label>
+                    <input type="date" id="date" aria-required="true">
+                </div>
+                <button type="submit" class="btn-primary">Add to Alkansya</button>
+            </form>
+        </section>
+
+        <!-- Actions -->
+        <section class="actions">
+            <button id="emptyAlkansyaBtn" class="btn-action empty">🏦 Empty Alkansya → Vault</button>
+            <div class="action-group">
+                <button id="exportBtn" class="btn-action export">📤 Export CSV</button>
+                <button id="importBtn" class="btn-action import">📥 Import CSV</button>
+                <input type="file" id="importFile" accept=".csv" hidden>
+            </div>
+        </section>
+
+        <!-- Transaction History -->
+        <section class="transaction-history">
+            <h2>Transaction History</h2>
+            <div id="transactionList" class="transaction-list">
+                <p class="empty-state">No transactions yet. Start saving!</p>
+            </div>
+        </section>
+    </div>
+
+    <!-- Modal for Edit Goal -->
+    <div id="goalModal" class="modal" role="dialog" aria-labelledby="goalModalTitle" aria-hidden="true">
+        <div class="modal-content">
+            <h3 id="goalModalTitle">Set Savings Goal</h3>
+            <form id="goalForm">
+                <div class="form-group">
+                    <label for="goalInput">Goal Amount (₱)</label>
+                    <input type="number" id="goalInput" step="0.01" min="0.01" aria-required="true">
+                </div>
+                <div class="modal-actions">
+                    <button type="button" id="cancelGoalBtn" class="btn-secondary">Cancel</button>
+                    <button type="submit" class="btn-primary">Save Goal</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for Edit Transaction -->
+    <div id="editModal" class="modal" role="dialog" aria-labelledby="editModalTitle" aria-hidden="true">
+        <div class="modal-content">
+            <h3 id="editModalTitle">Edit Transaction</h3>
+            <form id="editForm">
+                <input type="hidden" id="editId">
+                <div class="form-group">
+                    <label for="editAmount">Amount (₱)</label>
+                    <input type="number" id="editAmount" step="0.01" min="0.01" aria-required="true">
+                </div>
+                <div class="form-group">
+                    <label for="editQuantity">Quantity</label>
+                    <input type="number" id="editQuantity" min="1" aria-required="true">
+                </div>
+                <div class="form-group">
+                    <label for="editNote">Note</label>
+                    <input type="text" id="editNote">
+                </div>
+                <div class="form-group">
+                    <label for="editDate">Date</label>
+                    <input type="date" id="editDate" aria-required="true">
+                </div>
+                <div class="modal-actions">
+                    <button type="button" id="cancelEditBtn" class="btn-secondary">Cancel</button>
+                    <button type="submit" class="btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
